@@ -21,6 +21,6 @@ Edit `config.js` to point at your backend:
 
 ```js
 const CONFIG = {
-  API_URL: 'http://localhost:8000', // local dev
+  API_URL: 'http://localhost:5173', // local dev (Vite mock)
 }
 ```
