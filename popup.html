@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 280px;
+      background: #030712;
+      color: #f3f4f6;
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 16px;
+      color: #34d399;
+    }
+
+    .badge {
+      font-size: 10px;
+      color: #6b7280;
+      background: #111827;
+      border: 1px solid #1f2937;
+      padding: 2px 6px;
+      border-radius: 99px;
+    }
+
+    #status {
+      font-size: 12px;
+      color: #6b7280;
+      min-height: 16px;
+    }
+
+    #status.success { color: #34d399; }
+    #status.error   { color: #f87171; }
+
+    button {
+      width: 100%;
+      background: #10b981;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 9px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    button:hover  { background: #34d399; }
+    button:active { background: #059669; }
+    button:disabled { background: #1f2937; color: #4b5563; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="logo">HireTree</span>
+    <span class="badge">clip</span>
+  </header>
+
+  <p id="status">Ready to clip this page.</p>
+
+  <button id="clipBtn">Clip this page</button>
+
+  <script src="config.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
