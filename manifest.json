@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Clip job offers and send them to HireTree.",
   "permissions": ["activeTab", "scripting"],
-  "host_permissions": ["http://localhost/*"],
+  "host_permissions": ["http://localhost:5173/*"],
   "action": {
     "default_popup": "popup.html",
     "default_title": "HireTree Clip"
