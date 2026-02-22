@@ -127,6 +127,32 @@ document.getElementById('openApp').addEventListener('click', () => {
 })
 
 // ---------------------------------------------------------------------------
+// Shortcut — show current value + toggle instructions panel
+// ---------------------------------------------------------------------------
+async function loadShortcut() {
+  const commands = await chrome.commands.getAll()
+  const cmd = commands.find(c => c.name === 'clip-page')
+  const shortcutValue = document.getElementById('shortcutValue')
+  if (cmd?.shortcut) {
+    shortcutValue.innerHTML = `<kbd>${cmd.shortcut}</kbd>`
+  } else {
+    shortcutValue.textContent = 'Not set'
+  }
+}
+
+document.getElementById('shortcutChangeBtn').addEventListener('click', () => {
+  const panel = document.getElementById('shortcutPanel')
+  panel.classList.toggle('open')
+})
+
+document.getElementById('copyUrlBtn').addEventListener('click', async () => {
+  await navigator.clipboard.writeText('chrome://extensions/shortcuts')
+  const btn = document.getElementById('copyUrlBtn')
+  btn.textContent = 'Copied ✓'
+  setTimeout(() => { btn.textContent = 'Copy ↗' }, 2000)
+})
+
+// ---------------------------------------------------------------------------
 // Core clip logic — reused for normal clip and "Save anyway"
 // ---------------------------------------------------------------------------
 async function doClip(force = false) {
@@ -225,3 +251,4 @@ function extractPage(sites) {
 // Start
 // ---------------------------------------------------------------------------
 init()
+loadShortcut()

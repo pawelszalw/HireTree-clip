@@ -43,7 +43,6 @@
     #openApp {
       font-size: 11px;
       color: #4b5563;
-      text-decoration: none;
       cursor: pointer;
       background: none;
       border: none;
@@ -73,7 +72,7 @@
       height: 6px;
       border-radius: 50%;
       background: #4b5563;
-      shrink: 0;
+      flex-shrink: 0;
     }
     .dot.green  { background: #34d399; }
     .dot.red    { background: #f87171; }
@@ -97,6 +96,82 @@
     .site-badge.supported { color: #34d399; border-color: #065f46; background: #022c22; }
     .site-badge.generic   { color: #fbbf24; border-color: #78350f; background: #1c1108; }
 
+    /* Shortcut row */
+    .shortcut-icon { font-size: 11px; flex-shrink: 0; }
+
+    #shortcutValue {
+      font-size: 11px;
+      color: #6b7280;
+      flex: 1;
+    }
+    #shortcutValue kbd {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 10px;
+      font-family: inherit;
+      color: #9ca3af;
+    }
+
+    #shortcutChangeBtn {
+      font-size: 10px;
+      color: #4b5563;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 1px 4px;
+      border-radius: 4px;
+      transition: color 0.15s;
+      flex-shrink: 0;
+    }
+    #shortcutChangeBtn:hover { color: #9ca3af; }
+
+    /* Shortcut instructions panel */
+    #shortcutPanel {
+      display: none;
+      margin: 0 16px 10px;
+      background: #0f172a;
+      border: 1px solid #1f2937;
+      border-radius: 8px;
+      padding: 10px 12px;
+      gap: 8px;
+      flex-direction: column;
+    }
+    #shortcutPanel.open { display: flex; }
+
+    #shortcutPanel p {
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    .shortcut-url-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #1f2937;
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+    .shortcut-url-row span {
+      font-size: 10px;
+      color: #4b5563;
+      flex: 1;
+      font-family: monospace;
+    }
+    #copyUrlBtn {
+      font-size: 10px;
+      color: #34d399;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      transition: color 0.15s;
+    }
+    #copyUrlBtn:hover { color: #6ee7b7; }
+
     /* Body */
     .body {
       padding: 14px 16px;
@@ -119,7 +194,6 @@
       display: none;
       font-size: 11px;
       color: #34d399;
-      text-decoration: none;
       cursor: pointer;
       background: none;
       border: none;
@@ -178,6 +252,20 @@
       <div class="dot" id="siteDot"></div>
       <span class="meta-label" id="siteLabel">Detecting page…</span>
       <span class="site-badge" id="siteBadge" style="display:none"></span>
+    </div>
+    <div class="meta-row">
+      <span class="shortcut-icon">⌨</span>
+      <span id="shortcutValue" class="meta-label">Loading…</span>
+      <button id="shortcutChangeBtn">Change →</button>
+    </div>
+  </div>
+
+  <!-- Shortcut instructions panel (shown when Change is clicked) -->
+  <div id="shortcutPanel">
+    <p>Paste this URL in Chrome's address bar, then find <strong>HireTree Clip</strong> and press your keys:</p>
+    <div class="shortcut-url-row">
+      <span>chrome://extensions/shortcuts</span>
+      <button id="copyUrlBtn">Copy ↗</button>
     </div>
   </div>
 
