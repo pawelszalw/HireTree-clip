@@ -6,27 +6,29 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      width: 280px;
+      width: 300px;
       background: #030712;
       color: #f3f4f6;
       font-family: system-ui, sans-serif;
-      font-size: 14px;
-      padding: 16px;
+      font-size: 13px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
     }
 
+    /* Header */
     header {
       display: flex;
       align-items: center;
       gap: 8px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid #1f2937;
     }
 
     .logo {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
       color: #34d399;
+      flex: 1;
     }
 
     .badge {
@@ -38,17 +40,111 @@
       border-radius: 99px;
     }
 
-    #status {
-      font-size: 12px;
-      color: #6b7280;
-      min-height: 16px;
+    #openApp {
+      font-size: 11px;
+      color: #4b5563;
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: color 0.15s;
+    }
+    #openApp:hover { color: #9ca3af; }
+
+    /* Meta row */
+    .meta {
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-bottom: 1px solid #111827;
     }
 
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4b5563;
+      shrink: 0;
+    }
+    .dot.green  { background: #34d399; }
+    .dot.red    { background: #f87171; }
+    .dot.yellow { background: #fbbf24; }
+
+    .meta-label {
+      font-size: 11px;
+      color: #6b7280;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .site-badge {
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 99px;
+      border: 1px solid;
+    }
+    .site-badge.supported { color: #34d399; border-color: #065f46; background: #022c22; }
+    .site-badge.generic   { color: #fbbf24; border-color: #78350f; background: #1c1108; }
+
+    /* Body */
+    .body {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #status {
+      font-size: 12px;
+      color: #4b5563;
+      min-height: 16px;
+      line-height: 1.4;
+    }
     #status.success { color: #34d399; }
     #status.error   { color: #f87171; }
     #status.warn    { color: #fbbf24; }
 
-    button {
+    #viewLink {
+      display: none;
+      font-size: 11px;
+      color: #34d399;
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      text-align: left;
+    }
+    #viewLink:hover { color: #6ee7b7; }
+    #viewLink.visible { display: inline; }
+
+    #saveAnyway {
+      display: none;
+      font-size: 11px;
+      color: #fbbf24;
+      cursor: pointer;
+      background: none;
+      border: 1px solid #78350f;
+      border-radius: 6px;
+      padding: 5px 10px;
+      width: 100%;
+      text-align: center;
+      transition: background 0.15s;
+    }
+    #saveAnyway:hover { background: #1c1108; }
+
+    button#clipBtn {
       width: 100%;
       background: #10b981;
       color: #fff;
@@ -60,21 +156,37 @@
       cursor: pointer;
       transition: background 0.15s;
     }
-
-    button:hover  { background: #34d399; }
-    button:active { background: #059669; }
-    button:disabled { background: #1f2937; color: #4b5563; cursor: not-allowed; }
+    button#clipBtn:hover:not(:disabled)  { background: #34d399; }
+    button#clipBtn:active:not(:disabled) { background: #059669; }
+    button#clipBtn:disabled { background: #1f2937; color: #4b5563; cursor: not-allowed; }
   </style>
 </head>
 <body>
+
   <header>
     <span class="logo">HireTree</span>
     <span class="badge">clip</span>
+    <button id="openApp" title="Open HireTree">Open app ↗</button>
   </header>
 
-  <p id="status">Ready to clip this page.</p>
+  <div class="meta">
+    <div class="meta-row">
+      <div class="dot" id="userDot"></div>
+      <span class="meta-label" id="userLabel">Checking…</span>
+    </div>
+    <div class="meta-row">
+      <div class="dot" id="siteDot"></div>
+      <span class="meta-label" id="siteLabel">Detecting page…</span>
+      <span class="site-badge" id="siteBadge" style="display:none"></span>
+    </div>
+  </div>
 
-  <button id="clipBtn">Clip this page</button>
+  <div class="body">
+    <button id="clipBtn" disabled>Clip this page</button>
+    <p id="status"></p>
+    <button id="viewLink">View saved job →</button>
+    <button id="saveAnyway">Save anyway →</button>
+  </div>
 
   <script src="config.js"></script>
   <script src="popup.js"></script>
