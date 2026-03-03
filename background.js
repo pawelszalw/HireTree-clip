@@ -6,12 +6,12 @@
 importScripts('config.js')
 
 const SITES = [
-  { match: 'justjoin.it',      selector: 'main'               },
-  { match: 'nofluffjobs.com',  selector: 'main'               },
-  { match: 'linkedin.com',     selector: '.jobs-description'  },
-  { match: 'pracuj.pl',        selector: 'main'               },
-  { match: 'theprotocol.it',   selector: 'main'               },
-  { match: 'bulldogjob.pl',    selector: 'main'               },
+  { match: 'justjoin.it',      selector: 'main',               applyAppend: '/apply'          },
+  { match: 'nofluffjobs.com',  selector: 'main',               applySelector: 'a[href*="apply"]' },
+  { match: 'linkedin.com',     selector: '.jobs-description',  applySelector: 'a[href*="apply"]' },
+  { match: 'pracuj.pl',        selector: 'main',               applySelector: 'a[href*="aplikuj"], a[href*="apply"]' },
+  { match: 'theprotocol.it',   selector: 'main',               applySelector: 'a[href*="apply"]' },
+  { match: 'bulldogjob.pl',    selector: 'main',               applySelector: 'a[href*="apply"]' },
 ]
 
 // ---------------------------------------------------------------------------
@@ -51,7 +51,27 @@ function extractPage(sites) {
   } else {
     text = document.body.innerText.trim()
   }
-  return { url, raw_text: text }
+
+  // Find apply link — site-specific first, then generic text/href search
+  let apply_url = ''
+  if (site?.applyAppend) {
+    // e.g. justjoin.it — construct URL directly from current page URL
+    const base = url.split('?')[0].replace(/\/$/, '')
+    apply_url = base + site.applyAppend
+  } else if (site?.applySelector) {
+    const el = document.querySelector(site.applySelector)
+    if (el) apply_url = el.href
+  }
+  if (!apply_url) {
+    const keywords = ['apply', 'aplikuj', 'apply now', 'quick apply']
+    const link = Array.from(document.querySelectorAll('a[href]')).find(a =>
+      keywords.some(k => a.textContent.trim().toLowerCase().includes(k)) ||
+      keywords.some(k => a.href.toLowerCase().includes(k))
+    )
+    if (link) apply_url = link.href
+  }
+
+  return { url, raw_text: text, apply_url }
 }
 
 // ---------------------------------------------------------------------------

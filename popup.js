@@ -3,12 +3,12 @@
 // to avoid nav / footer / cookie banners in the extracted text.
 // ---------------------------------------------------------------------------
 const SITES = [
-  { match: 'justjoin.it',      name: 'JustJoinIT',   selector: 'main',              supported: true  },
-  { match: 'nofluffjobs.com',  name: 'NoFluffJobs',  selector: 'main',              supported: true  },
-  { match: 'linkedin.com',     name: 'LinkedIn',      selector: '.jobs-description', supported: true  },
-  { match: 'pracuj.pl',        name: 'Pracuj.pl',     selector: 'main',              supported: true  },
-  { match: 'theprotocol.it',   name: 'TheProtocol',   selector: 'main',              supported: true  },
-  { match: 'bulldogjob.pl',    name: 'Bulldogjob',    selector: 'main',              supported: true  },
+  { match: 'justjoin.it',      name: 'JustJoinIT',   selector: 'main',              supported: true, applyAppend: '/apply'                                          },
+  { match: 'nofluffjobs.com',  name: 'NoFluffJobs',  selector: 'main',              supported: true, applySelector: 'a[href*="apply"]'                              },
+  { match: 'linkedin.com',     name: 'LinkedIn',      selector: '.jobs-description', supported: true, applySelector: 'a[href*="apply"]'                              },
+  { match: 'pracuj.pl',        name: 'Pracuj.pl',     selector: 'main',              supported: true, applySelector: 'a[href*="aplikuj"], a[href*="apply"]'          },
+  { match: 'theprotocol.it',   name: 'TheProtocol',   selector: 'main',              supported: true, applySelector: 'a[href*="apply"]'                              },
+  { match: 'bulldogjob.pl',    name: 'Bulldogjob',    selector: 'main',              supported: true, applySelector: 'a[href*="apply"]'                              },
 ]
 
 // ---------------------------------------------------------------------------
@@ -244,7 +244,25 @@ function extractPage(sites) {
     text = document.body.innerText.trim()
   }
 
-  return { url, raw_text: text }
+  // Find apply link — site-specific first, then generic text/href search
+  let apply_url = ''
+  if (site?.applyAppend) {
+    const base = url.split('?')[0].replace(/\/$/, '')
+    apply_url = base + site.applyAppend
+  } else if (site?.applySelector) {
+    const el = document.querySelector(site.applySelector)
+    if (el) apply_url = el.href
+  }
+  if (!apply_url) {
+    const keywords = ['apply', 'aplikuj', 'apply now', 'quick apply']
+    const link = Array.from(document.querySelectorAll('a[href]')).find(a =>
+      keywords.some(k => a.textContent.trim().toLowerCase().includes(k)) ||
+      keywords.some(k => a.href.toLowerCase().includes(k))
+    )
+    if (link) apply_url = link.href
+  }
+
+  return { url, raw_text: text, apply_url }
 }
 
 // ---------------------------------------------------------------------------
