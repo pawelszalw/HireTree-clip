@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------------------
 
 importScripts('config.js')
+importScripts('utils.js')
 
 const SITES = [
   { match: 'justjoin.it',      selector: 'main',               applyAppend: '/apply'          },
@@ -135,6 +136,7 @@ async function doClip(tabId, force = false) {
     }
 
     notify('clip-success', 'Saved to HireTree ✓')
+    await notifyHireTreeTabs()
 
   } catch (err) {
     console.error('[HireTree background]', err)

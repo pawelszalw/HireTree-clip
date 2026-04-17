@@ -209,6 +209,7 @@ async function doClip(force = false) {
       setStatus('success', 'Saved ✓')
       showViewLink(data.id)
       btn.textContent = 'Clip this page'
+      await notifyHireTreeTabs()
     }
 
   } catch (err) {
