@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>HireTree Clip — Ustawienia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Caveat:wght@700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --paper:       #fafaf7;
+      --paper-2:     #f1f0ea;
+      --paper-3:     #e6e5df;
+      --ink:         #1a1a1a;
+      --ink-2:       #3a3a3a;
+      --ink-3:       #6b6b6b;
+      --ink-4:       #9a9a9a;
+      --line-soft:   #c9c9c9;
+      --emerald:     #10b981;
+      --emerald-ink: #0a7d57;
+      --emerald-wash:#d3f3e6;
+      --font-hand:   'Kalam', cursive;
+      --font-sketch: 'Caveat', cursive;
+      --font-code:   'JetBrains Mono', ui-monospace, monospace;
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-hand);
+      font-size: 15px;
+      min-height: 100vh;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: var(--paper-2);
+      border-bottom: 1.5px solid var(--ink);
+      height: 48px;
+      display: flex; align-items: center;
+      padding: 0 20px; gap: 8px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 7px;
+      font-family: var(--font-sketch); font-size: 20px; font-weight: 700; color: var(--ink);
+    }
+    .leaf {
+      width: 16px; height: 16px;
+      background: var(--emerald); border: 2px solid var(--ink);
+      border-radius: 60% 10% 60% 10%; transform: rotate(-18deg); flex: none;
+    }
+    .brand-sub { font-family: var(--font-code); font-size: 12px; color: var(--ink-4); margin-left: 4px; }
+
+    /* ── Layout ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      min-height: calc(100vh - 48px);
+    }
+
+    /* ── Sidebar nav ── */
+    .side-nav {
+      background: var(--paper-2);
+      border-right: 1.5px solid var(--ink);
+      padding: 16px 10px;
+    }
+    .side-nav a {
+      display: flex; align-items: center;
+      padding: 7px 10px; border-radius: 6px;
+      font-family: var(--font-hand); font-size: 15px;
+      color: var(--ink-2); text-decoration: none;
+      cursor: pointer;
+    }
+    .side-nav a:hover { background: var(--paper-3); }
+    .side-nav a.active { background: var(--ink); color: var(--paper); }
+
+    /* ── Content ── */
+    .content { padding: 28px 32px; max-width: 680px; }
+
+    /* ── Sections ── */
+    .section { margin-bottom: 32px; }
+    .section h3 { font-family: var(--font-sketch); font-size: 22px; font-weight: 700; margin: 0 0 16px; color: var(--ink); }
+    .options-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 0; border-bottom: 1px dashed var(--line-soft);
+    }
+    .options-row:last-child { border-bottom: none; }
+    .row-lbl { font-family: var(--font-hand); font-size: 16px; color: var(--ink); }
+    .row-sub { font-family: var(--font-code); font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+
+    /* ── Toggle ── */
+    .toggle {
+      width: 36px; height: 20px;
+      background: var(--emerald); border: 1.5px solid var(--ink);
+      border-radius: 10px; position: relative; cursor: pointer;
+      transition: background 0.15s; flex: none;
+    }
+    .toggle::after {
+      content: ''; position: absolute;
+      top: 2px; right: 2px;
+      width: 14px; height: 14px;
+      background: var(--ink); border-radius: 50%;
+      transition: all 0.15s;
+    }
+    .toggle.off { background: var(--paper-3); }
+    .toggle.off::after { right: auto; left: 2px; }
+
+    /* ── User row ── */
+    .user-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px;
+      background: var(--paper-2); border: 1.5px solid var(--ink);
+      border-radius: 8px; margin-bottom: 16px;
+    }
+    .user-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--emerald); border: 2px solid var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-code); font-size: 12px; font-weight: 700; color: white;
+      flex: none;
+    }
+    .user-info h5 { font-family: var(--font-sketch); font-size: 17px; margin: 0; }
+    .user-info p  { font-family: var(--font-code); font-size: 11px; color: var(--ink-3); margin: 0; }
+    .connected-badge {
+      display: flex; align-items: center; gap: 6px;
+      font-family: var(--font-code); font-size: 11px; color: var(--emerald-ink);
+      background: var(--emerald-wash); border: 1.5px solid var(--emerald-ink);
+      border-radius: 20px; padding: 4px 12px; flex: none;
+    }
+    .connected-badge::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--emerald);
+    }
+
+    /* ── Shortcut box ── */
+    .shortcut-box {
+      font-family: var(--font-code); font-size: 12px;
+      background: var(--paper-2); border: 1.5px solid var(--ink);
+      border-radius: 6px; padding: 5px 12px;
+    }
+    .chrome-link {
+      font-family: var(--font-code); font-size: 11px;
+      color: var(--emerald-ink); text-decoration: none;
+    }
+    .chrome-link:hover { text-decoration: underline; }
+
+    /* ── Lang buttons ── */
+    .lang-group { display: flex; gap: 6px; }
+    .lang-btn {
+      font-family: var(--font-code); font-size: 12px;
+      padding: 5px 14px; border-radius: 6px;
+      border: 1.5px solid var(--line-soft);
+      background: var(--paper); color: var(--ink-2); cursor: pointer;
+    }
+    .lang-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+    /* ── Logout btn ── */
+    .logout-btn {
+      font-family: var(--font-code); font-size: 11px;
+      padding: 4px 12px; border-radius: 6px;
+      border: 1px dashed #e0b5b5; background: transparent;
+      color: #c84040; cursor: pointer; margin-left: auto;
+    }
+    .logout-btn:hover { background: #fce8e8; }
+
+    /* ── Footer ── */
+    .options-footer {
+      font-family: var(--font-code); font-size: 11px; color: var(--ink-4);
+      padding-top: 14px; border-top: 1px dashed var(--line-soft);
+    }
+    .options-footer a { color: var(--emerald-ink); text-decoration: none; }
+    .options-footer a:hover { text-decoration: underline; }
+
+    /* ── Hidden ── */
+    .hidden { display: none !important; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="brand"><span class="leaf"></span> HireTree Clip</div>
+    <span class="brand-sub">— Ustawienia</span>
+  </div>
+
+  <div class="layout">
+    <nav class="side-nav">
+      <a href="#" class="active" data-tab="account">Konto</a>
+      <a href="#" data-tab="shortcuts">Skróty klawiszowe</a>
+      <a href="#" data-tab="portals">Portale</a>
+      <a href="#" data-tab="about">O rozszerzeniu</a>
+    </nav>
+
+    <div class="content">
+
+      <!-- TAB: Konto -->
+      <div id="tab-account" class="tab-panel active">
+        <div class="section">
+          <h3>Konto HireTree</h3>
+          <div class="user-row">
+            <div class="user-avatar" id="userAvatar">?</div>
+            <div class="user-info">
+              <h5 id="userName">—</h5>
+              <p id="userEmail">—</p>
+            </div>
+            <span class="connected-badge" id="connBadge">Połączono</span>
+            <button class="logout-btn" id="logoutBtn">Wyloguj</button>
+          </div>
+          <div class="options-row">
+            <div>
+              <div class="row-lbl">Automatyczne odświeżanie zakładek</div>
+              <div class="row-sub">Po udanym clipowaniu odśwież otwarte zakładki HireTree</div>
+            </div>
+            <div class="toggle" id="toggle-autoRefresh"></div>
+          </div>
+          <div class="options-row">
+            <div>
+              <div class="row-lbl">Pokazuj match score w popup</div>
+              <div class="row-sub">Po clipowaniu czekaj na wynik i pokaż w popupie</div>
+            </div>
+            <div class="toggle" id="toggle-showMatch"></div>
+          </div>
+          <div class="options-row">
+            <div><div class="row-lbl">Język interfejsu</div></div>
+            <div class="lang-group">
+              <button class="lang-btn" id="lang-pl" onclick="setLang('pl')">PL</button>
+              <button class="lang-btn" id="lang-en" onclick="setLang('en')">EN</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Skróty -->
+      <div id="tab-shortcuts" class="tab-panel">
+        <div class="section">
+          <h3>Skróty klawiszowe</h3>
+          <div class="options-row">
+            <div>
+              <div class="row-lbl">Clipuj bieżącą stronę</div>
+              <div class="row-sub">Działa na obsługiwanych portalach i jako fallback</div>
+            </div>
+            <span class="shortcut-box" id="shortcutClip">—</span>
+          </div>
+          <div style="margin-top:12px;">
+            <a class="chrome-link" href="#" id="changeShortcutLink">↗ Zmień skróty w ustawieniach Chrome</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Portale -->
+      <div id="tab-portals" class="tab-panel">
+        <div class="section">
+          <h3>Obsługiwane portale</h3>
+          <div class="options-row">
+            <div class="row-lbl">JustJoinIT</div>
+            <div class="toggle" id="toggle-portal-justjoin"></div>
+          </div>
+          <div class="options-row">
+            <div class="row-lbl">NoFluffJobs</div>
+            <div class="toggle" id="toggle-portal-nofluff"></div>
+          </div>
+          <div class="options-row">
+            <div class="row-lbl">LinkedIn</div>
+            <div class="toggle" id="toggle-portal-linkedin"></div>
+          </div>
+          <div class="options-row">
+            <div class="row-lbl">Pracuj.pl</div>
+            <div class="toggle off" id="toggle-portal-pracuj"></div>
+          </div>
+          <div class="options-row">
+            <div class="row-lbl">TheProtocol</div>
+            <div class="toggle" id="toggle-portal-theprotocol"></div>
+          </div>
+          <div class="options-row">
+            <div class="row-lbl">Bulldogjob</div>
+            <div class="toggle" id="toggle-portal-bulldogjob"></div>
+          </div>
+          <div class="options-row">
+            <div>
+              <div class="row-lbl">Fallback — dowolna strona</div>
+              <div class="row-sub">Dla nieobsługiwanych portali wyślij pełny tekst strony</div>
+            </div>
+            <div class="toggle" id="toggle-portal-fallback"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: O rozszerzeniu -->
+      <div id="tab-about" class="tab-panel">
+        <div class="section">
+          <h3>O rozszerzeniu</h3>
+          <div class="options-row">
+            <div class="row-lbl">Wersja</div>
+            <span id="extVersion" style="font-family:var(--font-code);font-size:12px;color:var(--ink-3);">0.1.0</span>
+          </div>
+          <div class="options-row">
+            <div class="row-lbl">Platforma</div>
+            <span style="font-family:var(--font-code);font-size:12px;color:var(--ink-3);">Chrome · Edge · MV3</span>
+          </div>
+          <div class="options-row">
+            <div class="row-lbl">Backend</div>
+            <span id="backendUrl" style="font-family:var(--font-code);font-size:11px;color:var(--ink-3);">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="options-footer">
+        HireTree Clip v<span id="footVersion">0.1.0</span> · Chrome MV3 ·
+        <a href="https://github.com/pszal/HireTree" target="_blank">GitHub</a> ·
+        <a href="#" id="reportBugLink">Raportuj błąd</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
