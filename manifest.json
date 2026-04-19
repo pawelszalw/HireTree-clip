@@ -14,6 +14,7 @@
       "description": "Clip current page to HireTree"
     }
   },
+  "options_page": "options.html",
   "background": {
     "service_worker": "background.js"
   },

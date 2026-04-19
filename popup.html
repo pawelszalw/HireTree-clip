@@ -1,279 +1,298 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
   <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Caveat:wght@700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --paper:       #fafaf7;
+      --paper-2:     #f1f0ea;
+      --paper-3:     #e6e5df;
+      --ink:         #1a1a1a;
+      --ink-2:       #3a3a3a;
+      --ink-3:       #6b6b6b;
+      --ink-4:       #9a9a9a;
+      --line-soft:   #c9c9c9;
+      --emerald:     #10b981;
+      --emerald-ink: #0a7d57;
+      --emerald-wash:#d3f3e6;
+      --font-hand:   'Kalam', cursive;
+      --font-sketch: 'Caveat', cursive;
+      --font-code:   'JetBrains Mono', ui-monospace, monospace;
+    }
 
     body {
       width: 300px;
-      background: #030712;
-      color: #f3f4f6;
-      font-family: system-ui, sans-serif;
-      font-size: 13px;
+      min-height: 368px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-hand);
+      font-size: 14px;
       display: flex;
       flex-direction: column;
     }
 
-    /* Header */
-    header {
+    /* ── Header ─────────────────────────────────── */
+    .popup-head {
+      padding: 13px 14px 10px;
+      border-bottom: 1px dashed var(--line-soft);
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 14px 16px 12px;
-      border-bottom: 1px solid #1f2937;
+      justify-content: space-between;
+      flex: none;
     }
-
     .logo {
-      font-weight: 700;
-      font-size: 15px;
-      color: #34d399;
+      display: flex; align-items: center; gap: 6px;
+      font-family: var(--font-sketch);
+      font-size: 18px; font-weight: 700; color: var(--ink);
+    }
+    .leaf {
+      width: 13px; height: 13px;
+      background: var(--emerald);
+      border: 1.5px solid var(--ink);
+      border-radius: 60% 10% 60% 10%;
+      transform: rotate(-18deg);
+      flex: none;
+    }
+    #langToggle {
+      font-family: var(--font-code);
+      font-size: 10px; color: var(--ink-4);
+      border: 1px solid var(--line-soft);
+      border-radius: 4px; padding: 2px 6px;
+      cursor: pointer; background: transparent;
+    }
+    #langToggle:hover { border-color: var(--ink-3); color: var(--ink-3); }
+
+    /* ── Body ───────────────────────────────────── */
+    .popup-body {
       flex: 1;
-    }
-
-    .badge {
-      font-size: 10px;
-      color: #6b7280;
-      background: #111827;
-      border: 1px solid #1f2937;
-      padding: 2px 6px;
-      border-radius: 99px;
-    }
-
-    #openApp {
-      font-size: 11px;
-      color: #4b5563;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 2px 4px;
-      border-radius: 4px;
-      transition: color 0.15s;
-    }
-    #openApp:hover { color: #9ca3af; }
-
-    /* Meta row */
-    .meta {
-      padding: 10px 16px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      border-bottom: 1px solid #111827;
     }
 
-    .meta-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    /* ── Status strip ───────────────────────────── */
+    .status-strip { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+    .status-line  { display: flex; align-items: center; gap: 6px; font-family: var(--font-code); font-size: 11px; color: var(--ink-2); }
+    .sdot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+    .sdot.green  { background: var(--emerald); }
+    .sdot.yellow { background: #fbbf24; }
+    .sdot.red    { background: #f87171; }
+    .sdot.gray   { background: var(--ink-4); }
 
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #4b5563;
-      flex-shrink: 0;
+    /* ── Offer card ─────────────────────────────── */
+    .offer-card {
+      background: var(--emerald-wash);
+      border: 1.5px solid var(--emerald-ink);
+      border-radius: 7px; padding: 10px 12px; margin: 8px 0;
     }
-    .dot.green  { background: #34d399; }
-    .dot.red    { background: #f87171; }
-    .dot.yellow { background: #fbbf24; }
+    .oc-title { font-family: var(--font-sketch); font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.2; margin: 0 0 2px; }
+    .oc-meta  { font-family: var(--font-code); font-size: 10px; color: var(--ink-3); }
 
-    .meta-label {
-      font-size: 11px;
-      color: #6b7280;
-      flex: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    /* ── Warn card ──────────────────────────────── */
+    .warn-card {
+      background: #fff6d9;
+      border: 1.5px solid #c9a516;
+      border-radius: 7px; padding: 10px 12px; margin: 8px 0;
+      font-family: var(--font-hand); font-size: 13px; color: #7a6610; line-height: 1.4;
     }
+    .supported-list { font-family: var(--font-code); font-size: 10px; color: var(--ink-4); margin-top: 4px; line-height: 1.6; }
 
-    .site-badge {
-      font-size: 10px;
-      padding: 1px 6px;
-      border-radius: 99px;
-      border: 1px solid;
-    }
-    .site-badge.supported { color: #34d399; border-color: #065f46; background: #022c22; }
-    .site-badge.generic   { color: #fbbf24; border-color: #78350f; background: #1c1108; }
-
-    /* Shortcut row */
-    .shortcut-icon { font-size: 11px; flex-shrink: 0; }
-
-    #shortcutValue {
-      font-size: 11px;
-      color: #6b7280;
-      flex: 1;
-    }
-    #shortcutValue kbd {
-      background: #111827;
-      border: 1px solid #374151;
-      border-radius: 4px;
-      padding: 1px 5px;
-      font-size: 10px;
-      font-family: inherit;
-      color: #9ca3af;
-    }
-
-    #shortcutChangeBtn {
-      font-size: 10px;
-      color: #4b5563;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 1px 4px;
-      border-radius: 4px;
-      transition: color 0.15s;
-      flex-shrink: 0;
-    }
-    #shortcutChangeBtn:hover { color: #9ca3af; }
-
-    /* Shortcut instructions panel */
-    #shortcutPanel {
-      display: none;
-      margin: 0 16px 10px;
-      background: #0f172a;
-      border: 1px solid #1f2937;
-      border-radius: 8px;
-      padding: 10px 12px;
-      gap: 8px;
-      flex-direction: column;
-    }
-    #shortcutPanel.open { display: flex; }
-
-    #shortcutPanel p {
-      font-size: 11px;
-      color: #6b7280;
-      line-height: 1.5;
-    }
-
-    .shortcut-url-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: #1f2937;
-      border-radius: 6px;
-      padding: 6px 8px;
-    }
-    .shortcut-url-row span {
-      font-size: 10px;
-      color: #4b5563;
-      flex: 1;
-      font-family: monospace;
-    }
-    #copyUrlBtn {
-      font-size: 10px;
-      color: #34d399;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      flex-shrink: 0;
-      transition: color 0.15s;
-    }
-    #copyUrlBtn:hover { color: #6ee7b7; }
-
-    /* Body */
-    .body {
-      padding: 14px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    #status {
-      font-size: 12px;
-      color: #4b5563;
-      min-height: 16px;
-      line-height: 1.4;
-    }
-    #status.success { color: #34d399; }
-    #status.error   { color: #f87171; }
-    #status.warn    { color: #fbbf24; }
-
-    #viewLink {
-      display: none;
-      font-size: 11px;
-      color: #34d399;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 0;
-      text-align: left;
-    }
-    #viewLink:hover { color: #6ee7b7; }
-    #viewLink.visible { display: inline; }
-
-    #saveAnyway {
-      display: none;
-      font-size: 11px;
-      color: #fbbf24;
-      cursor: pointer;
-      background: none;
-      border: 1px solid #78350f;
-      border-radius: 6px;
-      padding: 5px 10px;
-      width: 100%;
-      text-align: center;
-      transition: background 0.15s;
-    }
-    #saveAnyway:hover { background: #1c1108; }
-
-    button#clipBtn {
-      width: 100%;
-      background: #10b981;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
+    /* ── Buttons ────────────────────────────────── */
+    .pclip-btn {
+      display: block; width: 100%;
+      font-family: var(--font-code); font-size: 12px; font-weight: 700;
       padding: 9px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.15s;
+      background: var(--emerald); border: 1.5px solid var(--ink);
+      border-radius: 6px; cursor: pointer; text-align: center; color: var(--ink);
+      margin-top: auto;
     }
-    button#clipBtn:hover:not(:disabled)  { background: #34d399; }
-    button#clipBtn:active:not(:disabled) { background: #059669; }
-    button#clipBtn:disabled { background: #1f2937; color: #4b5563; cursor: not-allowed; }
+    .pclip-btn:hover:not(:disabled) { background: #0da574; }
+    .pclip-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .pclip-btn.secondary { background: var(--paper); color: var(--ink-2); margin-top: 6px; }
+    .pshortcut { text-align: center; font-family: var(--font-code); font-size: 10px; color: var(--ink-4); margin-top: 5px; }
+
+    /* ── Auth state ─────────────────────────────── */
+    .auth-state {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 14px;
+    }
+    .auth-state .lock { font-size: 32px; margin-bottom: 10px; }
+    .auth-state h4   { font-family: var(--font-sketch); font-size: 20px; font-weight: 700; margin: 0 0 6px; }
+    .auth-state p    { font-family: var(--font-hand); font-size: 14px; color: var(--ink-3); margin: 0 0 14px; line-height: 1.4; }
+    .auth-state a    { font-family: var(--font-code); font-size: 11px; color: var(--ink-3); display: block; margin-top: 8px; text-decoration: none; cursor: pointer; }
+
+    /* ── Calculating state ──────────────────────── */
+    .calc-state {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 10px;
+    }
+    .calc-state .icon-circle {
+      width: 44px; height: 44px;
+      background: var(--paper-2); border: 1.5px solid var(--line-soft);
+      border-radius: 50%; display: grid; place-items: center;
+      margin-bottom: 12px; font-size: 20px;
+    }
+    .calc-state h4 { font-family: var(--font-sketch); font-size: 22px; font-weight: 700; margin: 0 0 6px; }
+    .calc-state p  { font-family: var(--font-hand); font-size: 14px; color: var(--ink-3); margin: 0; }
+    .spinner {
+      width: 24px; height: 24px;
+      border: 2.5px solid var(--paper-3);
+      border-top-color: var(--emerald);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      margin-bottom: 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Match / Score state ────────────────────── */
+    .score-reveal {
+      flex: 1; text-align: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 10px 0;
+    }
+    .score-icon {
+      width: 44px; height: 44px;
+      background: var(--emerald-wash); border: 1.5px solid var(--emerald-ink);
+      border-radius: 50%; display: grid; place-items: center;
+      margin-bottom: 10px; font-size: 18px; color: var(--emerald-ink);
+    }
+    .score-big   { font-family: var(--font-sketch); font-size: 56px; font-weight: 700; color: var(--emerald-ink); line-height: 1; }
+    .score-label { font-family: var(--font-code); font-size: 11px; color: var(--ink-3); margin: 3px 0 10px; }
+    .score-missing { font-family: var(--font-hand); font-size: 13px; color: var(--ink-2); margin-bottom: 12px; line-height: 1.5; }
+    .miss-tag {
+      display: inline-block;
+      font-family: var(--font-code); font-size: 10px;
+      padding: 1px 6px; border: 1.5px dashed var(--ink-3);
+      border-radius: 4px; color: var(--ink-3);
+      text-decoration: line-through; margin: 1px 2px;
+    }
+
+    /* ── Error state ────────────────────────────── */
+    .error-box {
+      background: #fce8e8; border: 1.5px solid #e0b5b5;
+      border-radius: 7px; padding: 12px; text-align: center; margin: 10px 0;
+    }
+    .error-box .icon { font-size: 22px; margin-bottom: 6px; }
+    .error-box h5 { font-family: var(--font-sketch); font-size: 18px; font-weight: 700; color: #c84040; margin: 0 0 4px; }
+    .error-box p  { font-family: var(--font-hand); font-size: 13px; color: #a03030; margin: 0; line-height: 1.4; }
+
+    /* ── Footer ─────────────────────────────────── */
+    .popup-foot {
+      border-top: 1px dashed var(--line-soft);
+      padding: 8px 14px; flex: none;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .user-email  { font-family: var(--font-code); font-size: 10px; color: var(--ink-4); }
+    .foot-action { font-family: var(--font-code); font-size: 10px; color: var(--ink-4); cursor: pointer; background: none; border: none; }
+    .foot-action:hover { color: var(--ink-2); }
+
+    /* ── Utilities ──────────────────────────────── */
+    .hidden { display: none !important; }
+    .spacer { flex: 1; }
   </style>
 </head>
 <body>
 
-  <header>
-    <span class="logo">HireTree</span>
-    <span class="badge">clip</span>
-    <button id="openApp" title="Open HireTree">Open app ↗</button>
-  </header>
-
-  <div class="meta">
-    <div class="meta-row">
-      <div class="dot" id="userDot"></div>
-      <span class="meta-label" id="userLabel">Checking…</span>
-    </div>
-    <div class="meta-row">
-      <div class="dot" id="siteDot"></div>
-      <span class="meta-label" id="siteLabel">Detecting page…</span>
-      <span class="site-badge" id="siteBadge" style="display:none"></span>
-    </div>
-    <div class="meta-row">
-      <span class="shortcut-icon">⌨</span>
-      <span id="shortcutValue" class="meta-label">Loading…</span>
-      <button id="shortcutChangeBtn">Change →</button>
-    </div>
+  <!-- Header -->
+  <div class="popup-head">
+    <div class="logo"><span class="leaf"></span> HireTree Clip</div>
+    <button id="langToggle">EN</button>
   </div>
 
-  <!-- Shortcut instructions panel (shown when Change is clicked) -->
-  <div id="shortcutPanel">
-    <p>Paste this URL in Chrome's address bar, then find <strong>HireTree Clip</strong> and press your keys:</p>
-    <div class="shortcut-url-row">
-      <span>chrome://extensions/shortcuts</span>
-      <button id="copyUrlBtn">Copy ↗</button>
+  <!-- Body -->
+  <div class="popup-body">
+
+    <!-- STATE: loggedout -->
+    <div id="state-loggedout" class="auth-state hidden">
+      <div class="lock">🔒</div>
+      <h4 id="authTitle">Zaloguj się aby clipować</h4>
+      <p id="authDesc">Darmowe konto HireTree. Konfiguracja zajmuje 2 minuty.</p>
+      <button id="loginBtn" class="pclip-btn">Zaloguj się →</button>
+      <a id="registerLink" href="#">Utwórz darmowe konto</a>
     </div>
+
+    <!-- STATE: ready -->
+    <div id="state-ready" class="hidden" style="display:flex;flex-direction:column;flex:1;">
+      <div class="status-strip">
+        <div class="status-line"><span class="sdot green"></span><span id="readyUser">Zalogowany</span></div>
+        <div class="status-line"><span id="readySiteDot" class="sdot green"></span><span id="readySite">JustJoinIT ✓</span></div>
+      </div>
+      <div class="offer-card">
+        <div class="oc-title" id="offerTitle">…</div>
+        <div class="oc-meta" id="offerMeta">…</div>
+      </div>
+      <div class="spacer"></div>
+      <button id="clipBtn" class="pclip-btn">📎 Dodaj do HireTree</button>
+      <div class="pshortcut" id="shortcutHint">Ctrl + Shift + H</div>
+    </div>
+
+    <!-- STATE: unsupported -->
+    <div id="state-unsupported" class="hidden" style="display:flex;flex-direction:column;flex:1;">
+      <div class="status-strip">
+        <div class="status-line"><span class="sdot green"></span><span id="unsuppUser">Zalogowany</span></div>
+        <div class="status-line"><span class="sdot yellow"></span><span id="unsuppStatus">Strona nierozpoznana</span></div>
+      </div>
+      <div class="warn-card" id="unsuppWarn">Nie mogę automatycznie odczytać pól oferty. Wyślę pełny tekst strony — AI spróbuje sparsować dane.</div>
+      <div class="supported-list">
+        <span id="unsuppListLabel">Obsługiwane portale:</span><br>
+        JustJoinIT · NoFluffJobs · LinkedIn<br>
+        Pracuj.pl · TheProtocol · Bulldogjob
+      </div>
+      <div class="spacer"></div>
+      <button id="clipUnsuppBtn" class="pclip-btn">📎 Wyślij tekst strony</button>
+    </div>
+
+    <!-- STATE: calculating -->
+    <div id="state-calculating" class="hidden">
+      <div class="calc-state">
+        <div class="spinner"></div>
+        <h4 id="calcTitle">Zapisano!</h4>
+        <p id="calcDesc">Trwa obliczanie Twojego match score…</p>
+      </div>
+    </div>
+
+    <!-- STATE: match -->
+    <div id="state-match" class="hidden">
+      <div class="score-reveal">
+        <div class="score-icon">✓</div>
+        <div class="score-big" id="matchScore">—</div>
+        <div class="score-label" id="matchLabel">match</div>
+        <div class="score-missing" id="matchMissing"></div>
+        <button id="openJobBtn" class="pclip-btn" style="width:100%;margin-top:0;">Otwórz w HireTree →</button>
+        <button id="simulateBtn" class="pclip-btn secondary" style="width:100%;font-size:11px;">▶ Symuluj rozmowę</button>
+      </div>
+    </div>
+
+    <!-- STATE: error -->
+    <div id="state-error" class="hidden" style="display:flex;flex-direction:column;flex:1;">
+      <div class="status-strip">
+        <div class="status-line"><span id="errUserDot" class="sdot green"></span><span id="errUser">Zalogowany</span></div>
+        <div class="status-line"><span class="sdot red"></span><span id="errConn">Brak połączenia z HireTree</span></div>
+      </div>
+      <div class="error-box">
+        <div class="icon">⚠️</div>
+        <h5 id="errTitle">Błąd sieci</h5>
+        <p id="errMsg">Sprawdź połączenie z internetem i spróbuj ponownie.</p>
+      </div>
+      <div class="spacer"></div>
+      <button id="retryBtn" class="pclip-btn secondary">↺ Spróbuj ponownie</button>
+      <div style="text-align:center;margin-top:8px;">
+        <a id="errOpenApp" href="#" style="font-family:var(--font-code);font-size:11px;color:var(--ink-3);">Otwórz HireTree</a>
+      </div>
+    </div>
+
   </div>
 
-  <div class="body">
-    <button id="clipBtn" disabled>Clip this page</button>
-    <p id="status"></p>
-    <button id="viewLink">View saved job →</button>
-    <button id="saveAnyway">Save anyway →</button>
+  <!-- Footer -->
+  <div class="popup-foot">
+    <span id="footEmail" class="user-email">—</span>
+    <button id="footAction" class="foot-action">Wyloguj</button>
   </div>
 
   <script src="config.js"></script>
